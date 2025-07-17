@@ -10,7 +10,7 @@ import com.lgcms.lesson.dto.request.lesson.LessonCreateRequest;
 import com.lgcms.lesson.dto.request.lesson.LessonModifyRequest;
 import com.lgcms.lesson.dto.request.quiz.QuizAnswersRequest;
 import com.lgcms.lesson.dto.request.quiz.QuizCreateRequest;
-import com.lgcms.lesson.dto.response.LessonResponse;
+import com.lgcms.lesson.dto.response.lesson.LessonResponse;
 import com.lgcms.lesson.repository.LessonRepository;
 import com.lgcms.lesson.repository.QuizAnswersRepository;
 import com.lgcms.lesson.repository.QuizRepository;

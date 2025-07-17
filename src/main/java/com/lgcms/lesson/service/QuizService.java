@@ -7,12 +7,15 @@ import com.lgcms.lesson.domain.QuizAnswers;
 import com.lgcms.lesson.dto.request.quiz.QuizAnswersRequest;
 import com.lgcms.lesson.dto.request.quiz.QuizCreateRequest;
 import com.lgcms.lesson.dto.request.quiz.QuizModifyRequest;
+import com.lgcms.lesson.dto.response.quiz.QuizAnswerResponse;
+import com.lgcms.lesson.dto.response.quiz.QuizResponse;
 import com.lgcms.lesson.repository.QuizRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -59,5 +62,22 @@ public class QuizService {
                 quiz.addAnswer(answers);
             }
         }
+    }
+
+    @Transactional
+    public List<QuizResponse> getQuizzes(String lessonId) {
+        List<Quiz> quizzes = quizRepository.findAllByLessonId(lessonId);
+
+        List<QuizResponse> responses = quizzes.stream()
+                .map(quiz -> QuizResponse.builder()
+                        .answer(quiz.getAnswer())
+                        .question(quiz.getQuestion())
+                        .answers(quiz.getQuizAnswers().stream()
+                                .map(answer -> QuizAnswerResponse.builder()
+                                        .label(answer.getLabel())
+                                        .content(answer.getContent())
+                                        .build()).toList()
+                        ).build()).toList();
+        return responses;
     }
 }

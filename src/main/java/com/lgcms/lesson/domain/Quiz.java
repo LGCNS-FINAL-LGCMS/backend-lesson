@@ -33,6 +33,7 @@ public class Quiz {
     @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<QuizAnswers> quizAnswers = new ArrayList<>();
 
+
     public void addAnswer(QuizAnswers answer) {
         this.quizAnswers.add(answer);
         answer.setQuiz(this);
