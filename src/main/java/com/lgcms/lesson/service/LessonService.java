@@ -66,7 +66,22 @@ public class LessonService {
         return lesson.getId();
     }
 
+    @Transactional
+    public List<LessonResponse> getLessonList(String lectureId) {
+        List<LessonResponse> lessons = lessonRepository.findAllByLectureIdOrderByIdDESC(lectureId).stream()
+                .map(lesson -> LessonResponse.builder()
+                        .id(lesson.getId())
+                        .title(lesson.getTitle())
+                        .videoUrl(lesson.getVideoUrl())
+                        .thumbnail(lesson.getThumbnailUrl())
+                        .information(lesson.getInformation())
+                        .createdAt(lesson.getCreatedAt())
+                        .build())
+                .toList();
+        if(lessons.isEmpty()) throw new BaseException(LessonError.LESSON_NOT_FOUND);
 
+        return lessons;
+    }
 
     @Transactional
     public String modifyLesson(String lessonId, Long memberId, LessonModifyRequest dto) {

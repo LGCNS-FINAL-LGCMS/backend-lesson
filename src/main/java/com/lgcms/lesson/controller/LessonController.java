@@ -33,6 +33,14 @@ public class LessonController {
         return ResponseEntity.ok(BaseResponse.ok(lessonId));
     }
 
+    //수강생(결제 완료한 사람)이 보는 페이지 결제 x인 회원이 볼때 어떻게 할지 고민
+    @GetMapping("/details/{id}")
+    public ResponseEntity<BaseResponse> getLessonList(@PathVariable String lectureId){
+        List<LessonResponse> list = lessonService.getLessonList(lectureId);
+
+        return ResponseEntity.ok(BaseResponse.ok(list));
+    }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<BaseResponse> modifyLesson(@PathVariable String lessonId, @RequestBody LessonModifyRequest data){
