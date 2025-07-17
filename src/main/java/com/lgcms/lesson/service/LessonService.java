@@ -65,4 +65,19 @@ public class LessonService {
         }
         return lesson.getId();
     }
+
+
+
+    @Transactional
+    public String modifyLesson(String lessonId, Long memberId, LessonModifyRequest dto) {
+        Lesson lesson = lessonRepository.findById(lessonId)
+                .orElseThrow(()-> new BaseException(LessonError.LESSON_NOT_FOUND));
+
+        if(lesson.getMemberId() != memberId) throw new BaseException(LessonError.LECTURE_FORBIDDEN);
+
+        lesson.modifyLesson(dto.getInformation());
+
+        return lesson.getId();
+    }
+
 }

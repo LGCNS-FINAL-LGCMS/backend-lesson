@@ -33,4 +33,13 @@ public class LessonController {
         return ResponseEntity.ok(BaseResponse.ok(lessonId));
     }
 
+
+    @PutMapping("/{id}")
+    public ResponseEntity<BaseResponse> modifyLesson(@PathVariable String lessonId, @RequestBody LessonModifyRequest data){
+        Long memberId = Long.parseLong("1");
+        String id = lessonService.modifyLesson(lessonId,memberId,data);
+
+        return ResponseEntity.ok(BaseResponse.ok(id));
+    }
+
 }
