@@ -19,6 +19,8 @@ public class Lesson {
     @Id
     private String id;
 
+    private String title;
+
     private String lectureId;
 
     private Long memberId;
@@ -35,6 +37,12 @@ public class Lesson {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+
+
+    public void modifyLesson(String information){
+        this.information = information;
+        this.updatedAt = LocalDateTime.now();
+    }
 
 
 }

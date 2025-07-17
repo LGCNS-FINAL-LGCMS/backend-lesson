@@ -1,4 +1,4 @@
-package com.lgcms.lesson.service;
+package com.lgcms.lesson.service.internal;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -6,10 +6,8 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 @AllArgsConstructor
-public enum LessonError implements ErrorCodeInterface {
-    LECTURE_FORBIDDEN("LECE-03","강의에 접근 권한이 없습니다.", HttpStatus.FORBIDDEN),
-    LESSON_NOT_FOUND("LESE-01","공개된 강좌가 없습니다.", HttpStatus.NOT_FOUND)
-    ;
+public enum QuizError implements ErrorCodeInterface {
+    Quiz_FORBIDDEN("LECE-03","강의에 접근 권한이 없습니다.", HttpStatus.FORBIDDEN);
 
     private final String status;
     private final String message;
