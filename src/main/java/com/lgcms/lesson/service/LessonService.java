@@ -45,9 +45,9 @@ public class LessonService {
                 .videoStatus(VideoStatus.ENCODING)
                 .createdAt(LocalDateTime.now())
                 .build();
-        if(dto.getQuizzes() == null) return lesson.getId();
+        if (dto.getQuizzes() == null) return lesson.getId();
 
-        for(QuizCreateRequest quizCreateRequest : dto.getQuizzes()){
+        for (QuizCreateRequest quizCreateRequest : dto.getQuizzes()) {
             Quiz quiz = Quiz.builder()
                     .answer(quizCreateRequest.getAnswer())
                     .lessonId(lesson.getId())
@@ -55,7 +55,7 @@ public class LessonService {
                     .createdAt(LocalDateTime.now())
                     .build();
 
-            for(QuizAnswersRequest quizAnswersRequest : quizCreateRequest.getAnswers()){
+            for (QuizAnswersRequest quizAnswersRequest : quizCreateRequest.getAnswers()) {
                 QuizAnswers answer = QuizAnswers.builder()
                         .label(quizAnswersRequest.getLabel())
                         .content(quizAnswersRequest.getContent())
@@ -78,7 +78,7 @@ public class LessonService {
                         .createdAt(lesson.getCreatedAt())
                         .build())
                 .toList();
-        if(lessons.isEmpty()) throw new BaseException(LessonError.LESSON_NOT_FOUND);
+        if (lessons.isEmpty()) throw new BaseException(LessonError.LESSON_NOT_FOUND);
 
         return lessons;
     }
@@ -86,9 +86,9 @@ public class LessonService {
     @Transactional
     public String modifyLesson(String lessonId, Long memberId, LessonModifyRequest dto) {
         Lesson lesson = lessonRepository.findById(lessonId)
-                .orElseThrow(()-> new BaseException(LessonError.LESSON_NOT_FOUND));
+                .orElseThrow(() -> new BaseException(LessonError.LESSON_NOT_FOUND));
 
-        if(lesson.getMemberId() != memberId) throw new BaseException(LessonError.LECTURE_FORBIDDEN);
+        if (lesson.getMemberId() != memberId) throw new BaseException(LessonError.LECTURE_FORBIDDEN);
 
         lesson.modifyLesson(dto.getInformation());
 
@@ -98,8 +98,8 @@ public class LessonService {
     @Transactional
     public void deleteLesson(String lessonId, Long memberId) {
         Lesson lesson = lessonRepository.findById(lessonId)
-                .orElseThrow(()-> new BaseException(LessonError.LESSON_NOT_FOUND));
-        if(lesson.getMemberId() != memberId) throw new BaseException(LessonError.LECTURE_FORBIDDEN);
+                .orElseThrow(() -> new BaseException(LessonError.LESSON_NOT_FOUND));
+        if (lesson.getMemberId() != memberId) throw new BaseException(LessonError.LECTURE_FORBIDDEN);
 
         lessonRepository.delete(lesson);
     }
@@ -107,5 +107,19 @@ public class LessonService {
     @Transactional
     public void deleteAllLesson(String lectureId, Long memberId) {
         lessonRepository.deleteAllByLectureId(lectureId);
+    }
+
+    @Transactional
+    public LessonResponse getLesson(String lessonId) {
+        //사용자 검증 해야함
+        Lesson lesson = lessonRepository.findById(lessonId).orElseThrow(() -> new BaseException(LessonError.LESSON_NOT_FOUND));
+
+        return LessonResponse.builder()
+                .information(lesson.getInformation())
+                .videoUrl(lesson.getVideoUrl())
+                .thumbnail(lesson.getThumbnailUrl())
+                .createdAt(lesson.getCreatedAt())
+                .id(lesson.getId())
+                .build();
     }
 }

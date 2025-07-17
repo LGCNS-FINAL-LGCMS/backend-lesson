@@ -41,6 +41,12 @@ public class LessonController {
         return ResponseEntity.ok(BaseResponse.ok(list));
     }
 
+    @GetMapping("/section/{id}")
+    public ResponseEntity<BaseResponse> getLesson(@PathVariable String lessonId){
+        LessonResponse response = lessonService.getLesson(lessonId);
+        return ResponseEntity.ok(BaseResponse.ok(response));
+    }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<BaseResponse> modifyLesson(@PathVariable String lessonId, @RequestBody LessonModifyRequest data){
