@@ -95,4 +95,13 @@ public class LessonService {
         return lesson.getId();
     }
 
+    @Transactional
+    public void deleteLesson(String lessonId, Long memberId) {
+        Lesson lesson = lessonRepository.findById(lessonId)
+                .orElseThrow(()-> new BaseException(LessonError.LESSON_NOT_FOUND));
+        if(lesson.getMemberId() != memberId) throw new BaseException(LessonError.LECTURE_FORBIDDEN);
+
+        lessonRepository.delete(lesson);
+    }
+
 }

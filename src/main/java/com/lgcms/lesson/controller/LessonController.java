@@ -50,4 +50,12 @@ public class LessonController {
         return ResponseEntity.ok(BaseResponse.ok(id));
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<BaseResponse> deleteLesson(@PathVariable String lessonId){
+        Long memberId = Long.parseLong("1");
+        lessonService.deleteLesson(lessonId,memberId);
+
+        return ResponseEntity.ok(BaseResponse.ok("삭제완료~"));
+    }
+
 }
