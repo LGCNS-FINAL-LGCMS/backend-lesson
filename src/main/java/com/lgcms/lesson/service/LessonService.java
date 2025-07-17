@@ -45,6 +45,9 @@ public class LessonService {
                 .videoStatus(VideoStatus.ENCODING)
                 .createdAt(LocalDateTime.now())
                 .build();
+
+        lessonRepository.save(lesson);
+
         if (dto.getQuizzes() == null) return lesson.getId();
 
         for (QuizCreateRequest quizCreateRequest : dto.getQuizzes()) {
@@ -62,6 +65,7 @@ public class LessonService {
                         .build();
                 quiz.addAnswer(answer);
             }
+            quizRepository.save(quiz);
         }
         return lesson.getId();
     }
