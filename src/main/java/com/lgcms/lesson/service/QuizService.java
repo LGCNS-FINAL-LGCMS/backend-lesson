@@ -1,9 +1,12 @@
 package com.lgcms.lesson.service;
 
+import com.lgcms.lesson.common.dto.exception.BaseException;
+import com.lgcms.lesson.common.dto.exception.QuizError;
 import com.lgcms.lesson.domain.Quiz;
 import com.lgcms.lesson.domain.QuizAnswers;
 import com.lgcms.lesson.dto.request.quiz.QuizAnswersRequest;
 import com.lgcms.lesson.dto.request.quiz.QuizCreateRequest;
+import com.lgcms.lesson.dto.request.quiz.QuizModifyRequest;
 import com.lgcms.lesson.repository.QuizRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,4 +42,22 @@ public class QuizService {
     }
 
 
+    @Transactional
+    public void modifyQuiz(String lessonId, List<QuizModifyRequest> list) {
+        for(QuizModifyRequest quizModifyRequest : list){
+            Quiz quiz = quizRepository.findById(quizModifyRequest.getQuizId())
+                    .orElseThrow(() -> new BaseException(QuizError.QUIZ_NOT_FOUND));
+            quiz.modifyQuiz(quizModifyRequest.getQuestion(), quizModifyRequest.getAnswer());
+
+            quiz.getQuizAnswers().clear();
+
+            for(QuizAnswersRequest quizAnswersRequest : quizModifyRequest.getAnswers()){
+                QuizAnswers answers = QuizAnswers.builder()
+                        .label(quizAnswersRequest.getLabel())
+                        .content(quizAnswersRequest.getContent())
+                        .build();
+                quiz.addAnswer(answers);
+            }
+        }
+    }
 }

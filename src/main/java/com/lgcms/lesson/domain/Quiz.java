@@ -38,4 +38,8 @@ public class Quiz {
         answer.setQuiz(this);
     }
 
+    public void modifyQuiz(String question, char answer){
+        this.question = question;
+        this.answer = answer;
+    }
 }
