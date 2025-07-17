@@ -12,4 +12,6 @@ public interface LessonRepository extends JpaRepository<Lesson, String> {
     List<Lesson> findAllByLectureId(String lectureId);
 
     List<Lesson> findAllByLectureIdOrderByIdDESC(String lectureId);
+
+    void deleteAllByLectureId(String lectureId);
 }

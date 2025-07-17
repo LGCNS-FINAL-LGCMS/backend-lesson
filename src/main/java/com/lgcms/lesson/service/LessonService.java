@@ -104,4 +104,8 @@ public class LessonService {
         lessonRepository.delete(lesson);
     }
 
+    @Transactional
+    public void deleteAllLesson(String lectureId, Long memberId) {
+        lessonRepository.deleteAllByLectureId(lectureId);
+    }
 }

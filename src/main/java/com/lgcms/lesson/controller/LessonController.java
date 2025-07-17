@@ -58,4 +58,10 @@ public class LessonController {
         return ResponseEntity.ok(BaseResponse.ok("삭제완료~"));
     }
 
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<BaseResponse> deleteAllLesson(@PathVariable String lectureId, @RequestParam("memberId") Long memberId){
+        if(!lectureService.isExist(memberId, lectureId)) throw new BaseException(LessonError.LECTURE_FORBIDDEN);
+        lessonService.deleteAllLesson(lectureId, memberId);
+        return ResponseEntity.ok(BaseResponse.ok(null));
+    }
 }
