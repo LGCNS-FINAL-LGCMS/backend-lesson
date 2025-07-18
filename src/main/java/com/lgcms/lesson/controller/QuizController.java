@@ -17,11 +17,6 @@ import java.util.List;
 @Slf4j
 public class QuizController {
     private final QuizService quizService;
-    //
-//    @GetMapping("/{id}")
-//    public ResponseEntity<BaseResponse> getQuiz(@PathVariable("id") String lessonId){
-//
-//    }
 
     @PostMapping("/{id}")
     public ResponseEntity<BaseResponse> registerQuiz(@PathVariable("id") String lessonId,
@@ -38,8 +33,21 @@ public class QuizController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<BaseResponse> getQuizzes(@PathVariable("id") String lessonId){
+    public ResponseEntity<BaseResponse> getQuiz(@PathVariable("id") String lessonId){
         List<QuizResponse> quizList = quizService.getQuizzes(lessonId);
         return ResponseEntity.ok(BaseResponse.ok(quizList));
+    }
+    //전체삭제
+    @DeleteMapping("/delete/all/{id}")
+    public ResponseEntity<BaseResponse> deleteAllQuiz(@PathVariable("id") String lessonId){
+        quizService.deleteAllQuiz(lessonId);
+        return ResponseEntity.ok(BaseResponse.ok(null));
+    }
+
+    //단건삭제
+    @DeleteMapping("/{id}")
+    public ResponseEntity<BaseResponse> deleteQuiz(@PathVariable("id") Long quizId){
+        quizService.deleteQuiz(quizId);
+        return ResponseEntity.ok(BaseResponse.ok(null));
     }
 }

@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface QuizRepository extends JpaRepository<Quiz, Long> {
     List<Quiz> findAllByLessonId(String lessonId);
+
+    void deleteAllByLessonId(String lessonId);
 }

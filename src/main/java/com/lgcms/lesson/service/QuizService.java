@@ -80,4 +80,21 @@ public class QuizService {
                         ).build()).toList();
         return responses;
     }
+    //전체삭제
+    @Transactional
+    public void deleteAllQuiz(String lessonId) {
+
+        List<Quiz> quizzes = quizRepository.findAllByLessonId(lessonId);
+
+        if(quizzes.isEmpty()) throw new BaseException(QuizError.QUIZ_NOT_FOUND);
+
+        quizRepository.deleteAllByLessonId(lessonId);
+    }
+
+    public void deleteQuiz(Long quizId) {
+        Quiz quiz = quizRepository.findById(quizId).orElseThrow(() -> new BaseException(QuizError.QUIZ_NOT_FOUND));
+
+        quizRepository.deleteById(quiz.getId());
+
+    }
 }
