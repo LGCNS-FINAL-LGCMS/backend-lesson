@@ -69,4 +69,19 @@ public class MemoService {
         memo.addMemoContent(memoContent);
 
     }
+
+    @Transactional
+    public MemoResponse getMemo(String lessonId, Long memberId) {
+        Memo memo = memoRepository.findByLessonIdAndMemberId(lessonId, memberId)
+                .orElseThrow(() -> new BaseException(MemoError.MEMO_NOT_FOUND));
+        MemoResponse memoResponse = MemoResponse.builder()
+                .memoId(memo.getId())
+                .contents(memo.getMemoContents().stream()
+                        .map(content -> MemoContentResponse.builder()
+                                .content(content.getContent()).build()
+                        ).toList()
+                ).build();
+
+        return memoResponse;
+    }
 }

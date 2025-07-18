@@ -32,5 +32,13 @@ public class MemoController {
         return ResponseEntity.ok(BaseResponse.ok(null));
     }
 
+    @GetMapping("/member/{id}")
+    public ResponseEntity<BaseResponse> getMemo(@PathVariable("id") String lessonId){
+        Long memberId = Long.parseLong("1");
+        MemoResponse memoResponse = memoService.getMemo(lessonId, memberId);
+
+        return ResponseEntity.ok(BaseResponse.ok(memoResponse));
+    }
+
 
 }
