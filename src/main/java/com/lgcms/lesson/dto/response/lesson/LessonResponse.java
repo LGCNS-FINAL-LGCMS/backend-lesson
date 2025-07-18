@@ -1,4 +1,4 @@
-package com.lgcms.lesson.dto.response;
+package com.lgcms.lesson.dto.response.lesson;
 
 import lombok.Builder;
 import lombok.Data;

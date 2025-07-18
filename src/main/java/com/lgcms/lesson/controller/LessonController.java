@@ -6,7 +6,7 @@ import com.lgcms.lesson.common.dto.exception.BaseException;
 import com.lgcms.lesson.common.dto.exception.LessonError;
 import com.lgcms.lesson.dto.request.lesson.LessonCreateRequest;
 import com.lgcms.lesson.dto.request.lesson.LessonModifyRequest;
-import com.lgcms.lesson.dto.response.LessonResponse;
+import com.lgcms.lesson.dto.response.lesson.LessonResponse;
 import com.lgcms.lesson.service.internal.LectureService;
 import com.lgcms.lesson.service.LessonService;
 import lombok.RequiredArgsConstructor;

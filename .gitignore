@@ -38,9 +38,3 @@ out/
 
 application-*.yml
 
-QuizAnswersRepository.java
-QuizRepository.java
-QuizCreateRequest.java
-QuizAnswersRequest.java
-Quiz.java
-QuizAnswers.java
