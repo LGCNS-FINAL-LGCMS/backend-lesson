@@ -5,6 +5,7 @@ import com.lgcms.lesson.common.dto.exception.LessonError;
 import com.lgcms.lesson.domain.Lesson;
 import com.lgcms.lesson.domain.Quiz;
 import com.lgcms.lesson.domain.QuizAnswers;
+import com.lgcms.lesson.domain.type.ImageStatus;
 import com.lgcms.lesson.domain.type.VideoStatus;
 import com.lgcms.lesson.dto.request.lesson.LessonCreateRequest;
 import com.lgcms.lesson.dto.request.lesson.LessonModifyRequest;
@@ -43,6 +44,7 @@ public class LessonService {
                 .lectureId(lectureId)
                 .memberId(memberId)
                 .videoStatus(VideoStatus.ENCODING)
+                .imageStatus(ImageStatus.ENCODING)
                 .createdAt(LocalDateTime.now())
                 .build();
 

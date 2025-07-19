@@ -78,10 +78,16 @@ public class MemoService {
                 .memoId(memo.getId())
                 .contents(memo.getMemoContents().stream()
                         .map(content -> MemoContentResponse.builder()
+                                .id(content.getId())
                                 .content(content.getContent()).build()
                         ).toList()
                 ).build();
 
         return memoResponse;
+    }
+
+    @Transactional
+    public void deleteMemo(Long memoId) {
+        memoRepository.deleteById(memoId);
     }
 }

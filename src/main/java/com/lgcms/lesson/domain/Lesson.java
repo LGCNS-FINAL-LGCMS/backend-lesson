@@ -1,5 +1,6 @@
 package com.lgcms.lesson.domain;
 
+import com.lgcms.lesson.domain.type.ImageStatus;
 import com.lgcms.lesson.domain.type.VideoStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -25,14 +26,19 @@ public class Lesson {
 
     private Long memberId;
 
+    @Column(length = 50)
     private String thumbnailUrl;
 
+    @Column(length = 2000)
     private String information;
 
     private String videoUrl;
 
     @Enumerated(EnumType.STRING)
     private VideoStatus videoStatus;
+
+    @Enumerated(EnumType.STRING)
+    private ImageStatus imageStatus;
 
     private LocalDateTime createdAt;
 
