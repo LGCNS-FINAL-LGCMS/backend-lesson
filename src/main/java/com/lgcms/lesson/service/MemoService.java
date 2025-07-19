@@ -5,6 +5,7 @@ import com.lgcms.lesson.common.dto.exception.MemoError;
 import com.lgcms.lesson.domain.Memo;
 import com.lgcms.lesson.domain.MemoContent;
 import com.lgcms.lesson.dto.request.memo.MemoCreateRequest;
+import com.lgcms.lesson.dto.request.memo.MemoPatchRequest;
 import com.lgcms.lesson.dto.response.memo.MemoContentResponse;
 import com.lgcms.lesson.dto.response.memo.MemoResponse;
 import com.lgcms.lesson.repository.MemoContentRepository;
@@ -87,7 +88,15 @@ public class MemoService {
     }
 
     @Transactional
-    public void deleteMemo(Long memoId) {
-        memoRepository.deleteById(memoId);
+    public void deleteMemo(Long memoContentId) {
+        memoContentRepository.deleteById(memoContentId);
+    }
+
+    @Transactional
+    public void patchMemo(Long memoId, MemoPatchRequest memoPatchRequest) {
+        MemoContent memoContent = memoContentRepository.findById(memoId).orElseThrow(() -> new BaseException(MemoError.MEMO_NOT_FOUND));
+
+        memoContent.pathMemo(memoPatchRequest.getContent());
+
     }
 }

@@ -28,4 +28,8 @@ public class MemoContent {
     protected void setMemo(Memo memo){
         this.memo = memo;
     }
+
+    public void pathMemo(String content){
+        this.content = content;
+    }
 }

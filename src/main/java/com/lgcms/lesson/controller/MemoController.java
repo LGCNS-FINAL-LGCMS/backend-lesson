@@ -2,6 +2,7 @@ package com.lgcms.lesson.controller;
 
 import com.lgcms.lesson.common.dto.BaseResponse;
 import com.lgcms.lesson.dto.request.memo.MemoCreateRequest;
+import com.lgcms.lesson.dto.request.memo.MemoPatchRequest;
 import com.lgcms.lesson.dto.response.memo.MemoResponse;
 import com.lgcms.lesson.service.MemoService;
 import lombok.RequiredArgsConstructor;
@@ -44,9 +45,15 @@ public class MemoController {
 
     //메모 단건 삭제
     @DeleteMapping("/{id}")
-    public ResponseEntity<BaseResponse> deleteMemo(@PathVariable("id") Long memoId){
+    public ResponseEntity<BaseResponse> deleteMemo(@PathVariable("id") Long memoContentId){
         Long memberId = Long.parseLong("1");
-        memoService.deleteMemo(memoId);
+        memoService.deleteMemo(memoContentId);
+        return ResponseEntity.ok(BaseResponse.ok(null));
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<BaseResponse> patchMemo(@PathVariable("id") Long memoId, MemoPatchRequest memoPatchRequest){
+        memoService.patchMemo(memoId, memoPatchRequest);
         return ResponseEntity.ok(BaseResponse.ok(null));
     }
 
