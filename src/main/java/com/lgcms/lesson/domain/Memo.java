@@ -26,7 +26,7 @@ public class Memo {
     private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "memo", cascade = CascadeType.ALL, orphanRemoval = true)
-    List<MemoContent> memoContents = new ArrayList<>();
+    List<MemoContent> memoContents;
 
     public void addMemoContent(MemoContent content){
         this.memoContents.add(content);

@@ -31,7 +31,7 @@ public class Quiz {
     private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<QuizAnswers> quizAnswers = new ArrayList<>();
+    private List<QuizAnswers> quizAnswers;
 
 
     public void addAnswer(QuizAnswers answer) {

@@ -4,9 +4,12 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(name = "lecture-service" , url="localhost:8080/internal/lecture")
+@FeignClient(name = "RemoteLectureService" , url="/api/internal/lecture")
 public interface LectureService {
 
-    @GetMapping("/verify")
-    public Boolean isExist(@RequestParam("memberId") Long memberId, @RequestParam("lectureId") String lectureId);
+    @GetMapping("/lecturer/verify")
+    public Boolean isLecturer(@RequestParam("memberId") Long memberId, @RequestParam("lectureId") String lectureId);
+
+    @GetMapping("/student/verify")
+    public Boolean isStudent(@RequestParam("memberId") Long memberId, @RequestParam("lectureId") String lectureId);
 }

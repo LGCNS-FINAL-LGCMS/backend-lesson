@@ -29,6 +29,7 @@ public class QuizService {
         for (QuizCreateRequest request : quizCreateRequests) {
             Quiz quiz = Quiz.builder()
                     .answer(request.getAnswer())
+                    .quizAnswers(new ArrayList<>())
                     .question(request.getQuestion())
                     .lessonId(lessonId)
                     .build();
