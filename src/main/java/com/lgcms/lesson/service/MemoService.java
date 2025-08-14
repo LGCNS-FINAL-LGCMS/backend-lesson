@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
@@ -37,6 +38,7 @@ public class MemoService {
                     .memberId(memberId)
                     .lessonId(lectureId)
                     .createdAt(LocalDateTime.now())
+                    .memoContents(new ArrayList<>())
                     .build();
             MemoContent content = MemoContent.builder()
                     .build();

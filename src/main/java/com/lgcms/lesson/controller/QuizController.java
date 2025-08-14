@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController("/quiz")
+@RestController
+@RequestMapping("/quiz")
 @RequiredArgsConstructor
 @Slf4j
 public class QuizController {

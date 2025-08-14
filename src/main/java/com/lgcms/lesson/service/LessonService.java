@@ -15,6 +15,7 @@ import com.lgcms.lesson.dto.response.lesson.LessonResponse;
 import com.lgcms.lesson.repository.LessonRepository;
 import com.lgcms.lesson.repository.QuizAnswersRepository;
 import com.lgcms.lesson.repository.QuizRepository;
+import com.lgcms.lesson.service.internal.LectureService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -29,12 +30,14 @@ import java.util.UUID;
 @Slf4j
 public class LessonService {
 
-    private LessonRepository lessonRepository;
-    private QuizRepository quizRepository;
-    private QuizAnswersRepository quizAnswersRepository;
+    private final LessonRepository lessonRepository;
+    private final LectureService lectureService;
+    private final QuizRepository quizRepository;
+    private final QuizAnswersRepository quizAnswersRepository;
 
     @Transactional
     public String registerLesson(LessonCreateRequest dto, String lectureId, Long memberId) {
+        if(!lectureService.isLecturer(memberId, lectureId)) throw new BaseException(LessonError.LECTURE_FORBIDDEN);
         String lessonId = UUID.randomUUID() + dto.getTitle();
 
         Lesson lesson = Lesson.builder()
@@ -74,7 +77,7 @@ public class LessonService {
 
     @Transactional
     public List<LessonResponse> getLessonList(String lectureId) {
-        List<LessonResponse> lessons = lessonRepository.findAllByLectureIdOrderByIdDESC(lectureId).stream()
+        List<LessonResponse> lessons = lessonRepository.findAllByLectureIdOrderById(lectureId).stream()
                 .map(lesson -> LessonResponse.builder()
                         .id(lesson.getId())
                         .title(lesson.getTitle())
@@ -112,6 +115,7 @@ public class LessonService {
 
     @Transactional
     public void deleteAllLesson(String lectureId, Long memberId) {
+        if(!lectureService.isLecturer(memberId, lectureId)) throw new BaseException(LessonError.LECTURE_FORBIDDEN);
         lessonRepository.deleteAllByLectureId(lectureId);
     }
 

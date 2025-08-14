@@ -11,7 +11,7 @@ import java.util.List;
 public interface LessonRepository extends JpaRepository<Lesson, String> {
     List<Lesson> findAllByLectureId(String lectureId);
 
-    List<Lesson> findAllByLectureIdOrderByIdDESC(String lectureId);
+    List<Lesson> findAllByLectureIdOrderById(String lectureId);
 
     void deleteAllByLectureId(String lectureId);
 }
