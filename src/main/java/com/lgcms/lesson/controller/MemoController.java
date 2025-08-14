@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/member/memo")
+@RequestMapping("/api/student/memo")
 @RequiredArgsConstructor
 @Slf4j
 public class MemoController {

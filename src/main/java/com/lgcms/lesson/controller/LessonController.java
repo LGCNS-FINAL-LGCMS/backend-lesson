@@ -46,7 +46,7 @@ public class LessonController {
     }
 
 
-    @PutMapping("lecturer/lesson/{id}")
+    @PutMapping("/lecturer/lesson/{id}")
     public ResponseEntity<BaseResponse> modifyLesson(@PathVariable String lessonId,
                                                      @RequestBody LessonModifyRequest data,
                                                      @RequestHeader("X-USER-ID") String memberId){
@@ -55,7 +55,7 @@ public class LessonController {
         return ResponseEntity.ok(BaseResponse.ok(id));
     }
 
-    @DeleteMapping("lecturer/lesson/{id}")
+    @DeleteMapping("/lecturer/lesson/{id}")
     public ResponseEntity<BaseResponse> deleteLesson(@PathVariable String lessonId,
                                                      @RequestHeader("X-USER-ID") String memberId){
         lessonService.deleteLesson(lessonId,Long.parseLong(memberId));
@@ -63,7 +63,7 @@ public class LessonController {
         return ResponseEntity.ok(BaseResponse.ok("삭제완료~"));
     }
 
-    @DeleteMapping("lecturer/lesson/delete/{id}")
+    @DeleteMapping("/lecturer/lesson/delete/{id}")
     public ResponseEntity<BaseResponse> deleteAllLesson(@PathVariable String lectureId,
                                                         @RequestHeader("X-USER-ID") String memberId){
         lessonService.deleteAllLesson(lectureId, Long.parseLong(memberId));
