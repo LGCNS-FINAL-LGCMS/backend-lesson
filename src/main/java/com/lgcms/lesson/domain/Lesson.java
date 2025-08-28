@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
 @Getter @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "lecture_item")
 public class Lesson {
 
     @Id
@@ -26,13 +25,14 @@ public class Lesson {
 
     private Long memberId;
 
-    @Column(length = 50)
     private String thumbnailUrl;
 
     @Column(length = 2000)
     private String information;
 
     private String videoUrl;
+
+    private Integer playtime;
 
     @Enumerated(EnumType.STRING)
     private VideoStatus videoStatus;
@@ -48,6 +48,14 @@ public class Lesson {
     public void modifyLesson(String information){
         this.information = information;
         this.updatedAt = LocalDateTime.now();
+    }
+
+    public void setPlayTimeAndVideoAndThumbnail(Integer duration, String videoUrl, String thumbnailUrl){
+        this.playtime = duration;
+        this.videoUrl = videoUrl;
+        this.thumbnailUrl = thumbnailUrl;
+        this.videoStatus = VideoStatus.DONE;
+        this.imageStatus = ImageStatus.DONE;
     }
 
 

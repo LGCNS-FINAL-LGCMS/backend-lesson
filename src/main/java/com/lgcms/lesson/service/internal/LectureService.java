@@ -4,7 +4,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(name = "RemoteLectureService" , url="/api/internal/lecture")
+@FeignClient(name = "RemoteLectureService" , url="/internal/lecture")
 public interface LectureService {
 
     @GetMapping("/lecturer/verify")

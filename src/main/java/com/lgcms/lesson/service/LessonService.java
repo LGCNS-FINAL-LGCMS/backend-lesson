@@ -2,6 +2,7 @@ package com.lgcms.lesson.service;
 
 import com.lgcms.lesson.common.dto.exception.BaseException;
 import com.lgcms.lesson.common.dto.exception.LessonError;
+import com.lgcms.lesson.common.kafka.dto.EncodingSuccess;
 import com.lgcms.lesson.domain.Lesson;
 import com.lgcms.lesson.domain.Quiz;
 import com.lgcms.lesson.domain.QuizAnswers;
@@ -12,12 +13,13 @@ import com.lgcms.lesson.dto.request.lesson.LessonModifyRequest;
 import com.lgcms.lesson.dto.request.quiz.QuizAnswersRequest;
 import com.lgcms.lesson.dto.request.quiz.QuizCreateRequest;
 import com.lgcms.lesson.dto.response.lesson.LessonResponse;
+import com.lgcms.lesson.event.producer.EncodingEventProducer;
 import com.lgcms.lesson.repository.LessonRepository;
-import com.lgcms.lesson.repository.QuizAnswersRepository;
 import com.lgcms.lesson.repository.QuizRepository;
 import com.lgcms.lesson.service.internal.LectureService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,7 +35,8 @@ public class LessonService {
     private final LessonRepository lessonRepository;
     private final LectureService lectureService;
     private final QuizRepository quizRepository;
-    private final QuizAnswersRepository quizAnswersRepository;
+    private final ApplicationEventPublisher applicationEventPublisher;
+    private final EncodingEventProducer encodingEventProducer;
 
     @Transactional
     public String registerLesson(LessonCreateRequest dto, String lectureId, Long memberId) {
@@ -81,6 +84,7 @@ public class LessonService {
                 .map(lesson -> LessonResponse.builder()
                         .id(lesson.getId())
                         .title(lesson.getTitle())
+                        .lectureId(lesson.getLectureId())
                         .videoUrl(lesson.getVideoUrl())
                         .thumbnail(lesson.getThumbnailUrl())
                         .information(lesson.getInformation())
@@ -122,14 +126,28 @@ public class LessonService {
     @Transactional
     public LessonResponse getLesson(String lessonId) {
         //사용자 검증 해야함
-        Lesson lesson = lessonRepository.findById(lessonId).orElseThrow(() -> new BaseException(LessonError.LESSON_NOT_FOUND));
+        Lesson lesson = lessonRepository.findById(lessonId)
+                .orElseThrow(() -> new BaseException(LessonError.LESSON_NOT_FOUND));
 
         return LessonResponse.builder()
                 .information(lesson.getInformation())
+                .title(lesson.getTitle())
+                .lectureId(lesson.getLectureId())
+                .id(lesson.getId())
                 .videoUrl(lesson.getVideoUrl())
                 .thumbnail(lesson.getThumbnailUrl())
                 .createdAt(lesson.getCreatedAt())
-                .id(lesson.getId())
                 .build();
+    }
+
+    @Transactional
+    public void updateVideoStatusAndThumbnail(EncodingSuccess videoEncodingSuccess){
+        Lesson lesson = lessonRepository.findById(videoEncodingSuccess.getLessonId())
+                .orElseThrow(()-> new BaseException(LessonError.LESSON_NOT_FOUND));
+
+        lesson.setPlayTimeAndVideoAndThumbnail(videoEncodingSuccess.getDuration(),videoEncodingSuccess.getVideoUrl(),
+                videoEncodingSuccess.getThumbnailUrl());
+
+        encodingEventProducer.EncodingSuccessEvent(videoEncodingSuccess);
     }
 }
