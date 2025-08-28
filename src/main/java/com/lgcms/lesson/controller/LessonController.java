@@ -2,12 +2,9 @@ package com.lgcms.lesson.controller;
 
 
 import com.lgcms.lesson.common.dto.BaseResponse;
-import com.lgcms.lesson.common.dto.exception.BaseException;
-import com.lgcms.lesson.common.dto.exception.LessonError;
 import com.lgcms.lesson.dto.request.lesson.LessonCreateRequest;
 import com.lgcms.lesson.dto.request.lesson.LessonModifyRequest;
 import com.lgcms.lesson.dto.response.lesson.LessonResponse;
-import com.lgcms.lesson.service.internal.LectureService;
 import com.lgcms.lesson.service.LessonService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +15,7 @@ import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
+@RestController
 public class LessonController {
     private final LessonService lessonService;
 

@@ -40,7 +40,7 @@ public class LessonService {
 
     @Transactional
     public String registerLesson(LessonCreateRequest dto, String lectureId, Long memberId) {
-        if(!lectureService.isLecturer(memberId, lectureId)) throw new BaseException(LessonError.LECTURE_FORBIDDEN);
+//        if(!lectureService.isLecturer(memberId, lectureId)) throw new BaseException(LessonError.LECTURE_FORBIDDEN);
         String lessonId = UUID.randomUUID() + dto.getTitle();
 
         Lesson lesson = Lesson.builder()
@@ -56,25 +56,25 @@ public class LessonService {
 
         lessonRepository.save(lesson);
 
-        if (dto.getQuizzes() == null) return lesson.getId();
+//        if (dto.getQuizzes() == null) return lesson.getId();
 
-        for (QuizCreateRequest quizCreateRequest : dto.getQuizzes()) {
-            Quiz quiz = Quiz.builder()
-                    .answer(quizCreateRequest.getAnswer())
-                    .lessonId(lesson.getId())
-                    .question(quizCreateRequest.getQuestion())
-                    .createdAt(LocalDateTime.now())
-                    .build();
-
-            for (QuizAnswersRequest quizAnswersRequest : quizCreateRequest.getAnswers()) {
-                QuizAnswers answer = QuizAnswers.builder()
-                        .label(quizAnswersRequest.getLabel())
-                        .content(quizAnswersRequest.getContent())
-                        .build();
-                quiz.addAnswer(answer);
-            }
-            quizRepository.save(quiz);
-        }
+//        for (QuizCreateRequest quizCreateRequest : dto.getQuizzes()) {
+//            Quiz quiz = Quiz.builder()
+//                    .answer(quizCreateRequest.getAnswer())
+//                    .lessonId(lesson.getId())
+//                    .question(quizCreateRequest.getQuestion())
+//                    .createdAt(LocalDateTime.now())
+//                    .build();
+//
+//            for (QuizAnswersRequest quizAnswersRequest : quizCreateRequest.getAnswers()) {
+//                QuizAnswers answer = QuizAnswers.builder()
+//                        .label(quizAnswersRequest.getLabel())
+//                        .content(quizAnswersRequest.getContent())
+//                        .build();
+//                quiz.addAnswer(answer);
+//            }
+//            quizRepository.save(quiz);
+//        }
         return lesson.getId();
     }
 
