@@ -13,6 +13,10 @@ public class LessonResponse {
 
     private String title;
 
+    private String lectureId;
+
+    private Integer playtime;
+
     private String information;
 
     private String thumbnail;
