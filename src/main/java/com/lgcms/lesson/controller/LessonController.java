@@ -30,27 +30,27 @@ public class LessonController {
 
     //수강생(결제 완료한 사람)이 보는 페이지 결제 x인 회원이 볼때 어떻게 할지 고민
     @GetMapping("/lesson/details/{id}")
-    public ResponseEntity<BaseResponse<List<LessonResponse>>> getLessonList(@PathVariable String lectureId){
+    public ResponseEntity<BaseResponse<List<LessonResponse>>> getLessonList(@PathVariable("id") String lectureId){
         List<LessonResponse> list = lessonService.getLessonList(lectureId);
 
         return ResponseEntity.ok(BaseResponse.ok(list));
     }
 
     @GetMapping("/lesson/title/{id}")
-    public ResponseEntity<BaseResponse<List<LessonResponse>>> getLessonTitle(@PathVariable String lectureId){
+    public ResponseEntity<BaseResponse<List<LessonResponse>>> getLessonTitle(@PathVariable("id") String lectureId){
         List<LessonResponse> list = lessonService.getLessonTitles(lectureId);
         return ResponseEntity.ok(BaseResponse.ok(list));
     }
 
     @GetMapping("/lesson/section/{id}")
-    public ResponseEntity<BaseResponse> getLesson(@PathVariable String lessonId){
+    public ResponseEntity<BaseResponse> getLesson(@PathVariable("id") String lessonId){
         LessonResponse response = lessonService.getLesson(lessonId);
         return ResponseEntity.ok(BaseResponse.ok(response));
     }
 
 
     @PutMapping("/lecturer/lesson/{id}")
-    public ResponseEntity<BaseResponse> modifyLesson(@PathVariable String lessonId,
+    public ResponseEntity<BaseResponse> modifyLesson(@PathVariable("id") String lessonId,
                                                      @RequestBody LessonModifyRequest data,
                                                      @RequestHeader("X-USER-ID") String memberId){
         String id = lessonService.modifyLesson(lessonId,Long.parseLong(memberId),data);
@@ -59,7 +59,7 @@ public class LessonController {
     }
 
     @DeleteMapping("/lecturer/lesson/{id}")
-    public ResponseEntity<BaseResponse> deleteLesson(@PathVariable String lessonId,
+    public ResponseEntity<BaseResponse> deleteLesson(@PathVariable("id") String lessonId,
                                                      @RequestHeader("X-USER-ID") String memberId){
         lessonService.deleteLesson(lessonId,Long.parseLong(memberId));
 
@@ -67,7 +67,7 @@ public class LessonController {
     }
 
     @DeleteMapping("/lecturer/lesson/delete/{id}")
-    public ResponseEntity<BaseResponse> deleteAllLesson(@PathVariable String lectureId,
+    public ResponseEntity<BaseResponse> deleteAllLesson(@PathVariable("id") String lectureId,
                                                         @RequestHeader("X-USER-ID") String memberId){
         lessonService.deleteAllLesson(lectureId, Long.parseLong(memberId));
         return ResponseEntity.ok(BaseResponse.ok(null));
