@@ -79,6 +79,19 @@ public class LessonService {
     }
 
     @Transactional
+    public List<LessonResponse> getLessonTitles(String lectureId){
+        List<LessonResponse> lessons = lessonRepository.findAllByLectureIdOrderById(lectureId).stream()
+                .map(lesson -> LessonResponse.builder()
+                        .id(lesson.getId())
+                        .title(lesson.getTitle())
+                        .playtime(lesson.getPlaytime()/60)
+                        .build())
+                .toList();
+        if (lessons.isEmpty()) throw new BaseException(LessonError.LESSON_NOT_FOUND);
+        return lessons;
+    }
+
+    @Transactional
     public List<LessonResponse> getLessonList(String lectureId) {
         List<LessonResponse> lessons = lessonRepository.findAllByLectureIdOrderById(lectureId).stream()
                 .map(lesson -> LessonResponse.builder()

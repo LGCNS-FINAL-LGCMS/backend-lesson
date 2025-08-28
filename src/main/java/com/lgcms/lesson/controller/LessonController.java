@@ -38,6 +38,12 @@ public class LessonController {
         return ResponseEntity.ok(BaseResponse.ok(list));
     }
 
+    @GetMapping("/lesson/title/{id}")
+    public ResponseEntity<BaseResponse<List<LessonResponse>>> getLessonTitle(@PathVariable String lectureId){
+        List<LessonResponse> list = lessonService.getLessonTitles(lectureId);
+        return ResponseEntity.ok(BaseResponse.ok(list));
+    }
+
     @GetMapping("/lesson/section/{id}")
     public ResponseEntity<BaseResponse> getLesson(@PathVariable String lessonId){
         LessonResponse response = lessonService.getLesson(lessonId);
