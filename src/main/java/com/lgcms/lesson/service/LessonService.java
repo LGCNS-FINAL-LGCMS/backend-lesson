@@ -80,7 +80,7 @@ public class LessonService {
 
     @Transactional
     public List<LessonResponse> getLessonTitles(String lectureId){
-        List<LessonResponse> lessons = lessonRepository.findAllByLectureIdOrderById(lectureId).stream()
+        List<LessonResponse> lessons = lessonRepository.findAllByLectureIdOrderByCreatedAt(lectureId).stream()
                 .map(lesson -> LessonResponse.builder()
                         .id(lesson.getId())
                         .title(lesson.getTitle())
@@ -93,7 +93,7 @@ public class LessonService {
 
     @Transactional
     public List<LessonResponse> getLessonList(String lectureId) {
-        List<LessonResponse> lessons = lessonRepository.findAllByLectureIdOrderById(lectureId).stream()
+        List<LessonResponse> lessons = lessonRepository.findAllByLectureIdOrderByCreatedAt(lectureId).stream()
                 .map(lesson -> LessonResponse.builder()
                         .id(lesson.getId())
                         .title(lesson.getTitle())
