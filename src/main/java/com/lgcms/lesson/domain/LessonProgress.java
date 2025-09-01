@@ -35,7 +35,6 @@ public class LessonProgress {
 
     private LocalDateTime updatedAt;
 
-    @PrePersist
     @PreUpdate
     public void updateTimestamp() {
         this.updatedAt = LocalDateTime.now();
@@ -43,8 +42,10 @@ public class LessonProgress {
 
     @PrePersist
     public void initProgress() {
+        this.percentage = 0;
         this.playtime = 0;
         this.lastWatched = 0;
+        this.updatedAt = LocalDateTime.now();
     }
 
     public void updatePlayTime(int playtime) {

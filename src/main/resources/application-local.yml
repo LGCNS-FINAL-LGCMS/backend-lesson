@@ -5,8 +5,8 @@ spring:
   application:
     name: backend-lesson
   datasource:
-    url: jdbc:postgresql://localhost:/lesson?serverTimezone=UTC&useSSL=true&autoReconnect=true&useUnicode=true&characterEncoding=utf-8
-    username: admin
+    url: jdbc:postgresql://localhost:38121/lesson?serverTimezone=UTC&useSSL=true&autoReconnect=true&useUnicode=true&characterEncoding=utf-8
+    username: lgcms
     password: 1234
     driver-class-name: org.postgresql.Driver
     hikari:
@@ -21,7 +21,7 @@ spring:
     open-in-view: false
 
   kafka:
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: localhost:38123
 
     listener:
       ack-mode: manual_immediate
