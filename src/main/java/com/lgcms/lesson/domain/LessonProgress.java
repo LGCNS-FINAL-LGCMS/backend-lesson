@@ -9,7 +9,8 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Entity
-@Getter@Builder
+@Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class LessonProgress {
@@ -30,17 +31,31 @@ public class LessonProgress {
 
     private Integer lastWatched;
 
+    private Integer percentage;
+
     private LocalDateTime updatedAt;
 
-    @PrePersist
     @PreUpdate
     public void updateTimestamp() {
         this.updatedAt = LocalDateTime.now();
     }
 
-    public void updatePlayTime(int playtime){
-        if(this.playtime < playtime) this.playtime = playtime;
+    @PrePersist
+    public void initProgress() {
+        this.percentage = 0;
+        this.playtime = 0;
+        this.lastWatched = 0;
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    public void updatePlayTime(int playtime) {
+        if (this.playtime < playtime) this.playtime = playtime;
         this.lastWatched = playtime;
+
+        double ratio = (double) this.playtime / this.totalPlaytime * 100;
+        int percent = (int) Math.round(ratio);
+
+        this.percentage = (percent >= 97) ? 100 : percent;
     }
 
 }

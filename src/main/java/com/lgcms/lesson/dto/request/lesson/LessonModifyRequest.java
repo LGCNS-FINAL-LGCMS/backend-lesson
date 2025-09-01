@@ -6,6 +6,6 @@ import lombok.Data;
 @Data
 @Builder
 public class LessonModifyRequest {
-
+    private String title;
     private String information;
 }

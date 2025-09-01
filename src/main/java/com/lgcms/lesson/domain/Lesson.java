@@ -45,8 +45,9 @@ public class Lesson {
     private LocalDateTime updatedAt;
 
 
-    public void modifyLesson(String information){
-        this.information = information;
+    public void modifyLesson(String information, String title){
+       if(information != null && !information.isBlank()) this.information = information;
+       if(title != null && !title.isBlank()) this.title = title;
         this.updatedAt = LocalDateTime.now();
     }
 
