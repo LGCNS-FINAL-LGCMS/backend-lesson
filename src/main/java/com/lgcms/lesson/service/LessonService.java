@@ -45,7 +45,7 @@ public class LessonService {
 
     @Transactional
     public String registerLesson(LessonCreateRequest dto, String lectureId, Long memberId) {
-//        if(!lectureService.isLecturer(memberId, lectureId)) throw new BaseException(LessonError.LECTURE_FORBIDDEN);
+        if(!lectureService.isLecturer(memberId, lectureId)) throw new BaseException(LessonError.LECTURE_FORBIDDEN);
         String lessonId = UUID.randomUUID() + dto.getTitle();
 
         Lesson lesson = Lesson.builder()
@@ -54,6 +54,7 @@ public class LessonService {
                 .title(dto.getTitle())
                 .lectureId(lectureId)
                 .memberId(memberId)
+                .thumbnailUrl("https://cdn.lgcms.click/thumbnail/thumb_ing.jpg")
                 .videoStatus(VideoStatus.ENCODING)
                 .imageStatus(ImageStatus.ENCODING)
                 .createdAt(LocalDateTime.now())
@@ -90,6 +91,7 @@ public class LessonService {
                         .id(lesson.getId())
                         .title(lesson.getTitle())
                         .playtime(lesson.getPlaytime())
+                        .createdAt(lesson.getCreatedAt())
                         .build())
                 .toList();
         if (lessons.isEmpty()) throw new BaseException(LessonError.LESSON_NOT_FOUND);
@@ -97,20 +99,23 @@ public class LessonService {
     }
 
     @Transactional
-    public List<LessonResponse> getLessonList(String lectureId) {
-        List<LessonResponse> lessons = lessonRepository.findAllByLectureIdOrderByCreatedAt(lectureId).stream()
-                .map(lesson -> LessonResponse.builder()
-                        .id(lesson.getId())
-                        .title(lesson.getTitle())
-                        .lectureId(lesson.getLectureId())
-                        .videoUrl(lesson.getVideoUrl())
-                        .thumbnail(lesson.getThumbnailUrl())
-                        .information(lesson.getInformation())
-                        .createdAt(lesson.getCreatedAt())
-                        .playtime(lesson.getPlaytime())
-                        .build())
-                .toList();
-        if (lessons.isEmpty()) throw new BaseException(LessonError.LESSON_NOT_FOUND);
+    public List<LessonResponse> getLessonList(String lectureId, Long memberId) {
+
+//        List<LessonResponse> lessons = lessonRepository.findAllByLectureIdOrderByCreatedAt(lectureId).stream()
+//                .map(lesson -> LessonResponse.builder()
+//                        .id(lesson.getId())
+//                        .title(lesson.getTitle())
+//                        .lectureId(lesson.getLectureId())
+//                        .videoUrl(lesson.getVideoUrl())
+//                        .thumbnail(lesson.getThumbnailUrl())
+//                        .information(lesson.getInformation())
+//                        .createdAt(lesson.getCreatedAt())
+//                        .playtime(lesson.getPlaytime())
+//                        .build())
+//                .toList();
+//
+        List<LessonResponse> lessons = lessonRepository.findLessonWithProgress(lectureId,memberId);
+        if(lessons.isEmpty()) throw new BaseException(LessonError.LESSON_NOT_FOUND);
 
         return lessons;
     }
@@ -143,16 +148,16 @@ public class LessonService {
     }
 
     @Transactional
-    public LessonResponse getLesson(String lessonId) {
-        //사용자 검증 해야함
+    public LessonResponse getLesson(String lessonId, Long memberId) {
         Lesson lesson = lessonRepository.findById(lessonId)
                 .orElseThrow(() -> new BaseException(LessonError.LESSON_NOT_FOUND));
-
+        LessonProgress lessonProgress = lessonProgressRepository.findByLessonIdAndMemberId(lessonId,memberId);
         return LessonResponse.builder()
                 .information(lesson.getInformation())
                 .title(lesson.getTitle())
                 .lectureId(lesson.getLectureId())
                 .id(lesson.getId())
+                .progress(lessonProgress.getPercentage())
                 .videoUrl(lesson.getVideoUrl())
                 .thumbnail(lesson.getThumbnailUrl())
                 .createdAt(lesson.getCreatedAt())
@@ -188,14 +193,23 @@ public class LessonService {
     @Transactional
     public void updateLessonProgress(LessonProgressRequest lessonProgressRequest, Long memberId) {
         LessonProgress lessonProgress = lessonProgressRepository.findByLessonId(lessonProgressRequest.getLessonId());
-
         lessonProgress.updatePlayTime(lessonProgress.getPlaytime());
+
+        List<LessonProgress> lessonProgressList =
+                lessonProgressRepository.findByLectureIdAndMemberId(lessonProgressRequest.getLectureId(),memberId);
+
+        lessonProgressList.removeIf(lp -> lp.getLessonId().equals(lessonProgress.getLessonId()));
+        lessonProgressList.add(lessonProgress);
+
+        Integer progress = lessonProgressList.stream()
+                .mapToInt(LessonProgress::getPlaytime)
+                .sum();
 
         ProgressUpdate progressUpdate = ProgressUpdate.builder()
                 .lessonId(lessonProgressRequest.getLessonId())
                 .lectureId(lessonProgressRequest.getLectureId())
                 .memberId(memberId)
-                .playtime(lessonProgress.getPlaytime())
+                .playtime(progress)
                 .build();
 
         progressUpdateProducer.updateProgressEvent(progressUpdate);
