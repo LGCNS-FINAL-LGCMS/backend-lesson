@@ -26,17 +26,18 @@ public interface LessonRepository extends JpaRepository<Lesson, String> {
 
     void deleteAllByLectureId(String lectureId);
 
-
     @Query("""
-    SELECT l.id as id,
-           l.title as title,
-           l.lectureId as lectureId,
-           l.videoUrl as videoUrl,
-           l.thumbnailUrl as thumbnailUrl,
-           l.information as information,
-           l.createdAt as createdAt,
-           l.playtime as playtime,
-           lp.playtime as progressPlaytime
+    SELECT new com.lgcms.lesson.dto.response.lesson.LessonResponse(
+           l.id,
+           l.title,
+           l.lectureId,
+           l.playtime,
+           l.information,
+           l.thumbnailUrl,
+           l.videoUrl,
+           lp.playtime,
+           l.createdAt
+    )
     FROM Lesson l
     LEFT JOIN LessonProgress lp 
            ON l.id = lp.lessonId AND lp.memberId = :memberId
