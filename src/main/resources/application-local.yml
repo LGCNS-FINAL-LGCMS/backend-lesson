@@ -49,3 +49,11 @@ spring:
         config:
           RemoteLectureService:
             url: http://localhost:38106
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus,health,info
+  metrics:
+    tags:
+      application: ${spring.application.name}
