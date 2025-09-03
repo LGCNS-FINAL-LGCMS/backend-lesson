@@ -35,7 +35,7 @@ public interface LessonRepository extends JpaRepository<Lesson, String> {
            l.information,
            l.thumbnailUrl,
            l.videoUrl,
-           lp.playtime,
+           lp.percentage,
            l.createdAt
     )
     FROM Lesson l
