@@ -94,7 +94,6 @@ public class LessonService {
                         .createdAt(lesson.getCreatedAt())
                         .build())
                 .toList();
-        if (lessons.isEmpty()) throw new BaseException(LessonError.LESSON_NOT_FOUND);
         return lessons;
     }
 
