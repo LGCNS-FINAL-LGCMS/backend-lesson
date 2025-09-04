@@ -83,7 +83,7 @@ public class LessonController {
         return ResponseEntity.ok(BaseResponse.ok(null));
     }
 
-    @PatchMapping("/sutdent/lesson/progress")
+    @PatchMapping("/student/lesson/progress")
     public ResponseEntity<BaseResponse> updateLessonProgress(@RequestBody LessonProgressRequest lessonProgressRequest,
                                                              @RequestHeader("X-USER-ID") Long memberId){
         lessonService.updateLessonProgress(lessonProgressRequest, memberId);

@@ -45,7 +45,7 @@ public class LessonService {
 
     @Transactional
     public String registerLesson(LessonCreateRequest dto, String lectureId, Long memberId) {
-        if(!lectureService.isLecturer(memberId, lectureId)) throw new BaseException(LessonError.LECTURE_FORBIDDEN);
+        if (!lectureService.isLecturer(memberId, lectureId)) throw new BaseException(LessonError.LECTURE_FORBIDDEN);
         String lessonId = UUID.randomUUID() + dto.getTitle();
 
         Lesson lesson = Lesson.builder()
@@ -113,8 +113,8 @@ public class LessonService {
 //                        .build())
 //                .toList();
 //
-        List<LessonResponse> lessons = lessonRepository.findLessonWithProgress(lectureId,memberId);
-        if(lessons.isEmpty()) throw new BaseException(LessonError.LESSON_NOT_FOUND);
+        List<LessonResponse> lessons = lessonRepository.findLessonWithProgress(lectureId, memberId);
+        if (lessons.isEmpty()) throw new BaseException(LessonError.LESSON_NOT_FOUND);
 
         return lessons;
     }
@@ -150,7 +150,7 @@ public class LessonService {
     public LessonResponse getLesson(String lessonId, Long memberId) {
         Lesson lesson = lessonRepository.findById(lessonId)
                 .orElseThrow(() -> new BaseException(LessonError.LESSON_NOT_FOUND));
-        LessonProgress lessonProgress = lessonProgressRepository.findByLessonIdAndMemberId(lessonId,memberId);
+        LessonProgress lessonProgress = lessonProgressRepository.findByLessonIdAndMemberId(lessonId, memberId);
         return LessonResponse.builder()
                 .information(lesson.getInformation())
                 .title(lesson.getTitle())
@@ -177,6 +177,7 @@ public class LessonService {
 
     @Transactional
     public void initLessonProgress(LessonProgressRequest lessonProgressRequest, Long memberId) {
+        if(lessonProgressRepository.findByLessonIdAndMemberId(lessonProgressRequest.getLessonId(), memberId) != null) return;
 
         LessonProgress lessonProgress = LessonProgress.builder()
                 .lessonId(lessonProgressRequest.getLessonId())
@@ -191,11 +192,14 @@ public class LessonService {
 
     @Transactional
     public void updateLessonProgress(LessonProgressRequest lessonProgressRequest, Long memberId) {
-        LessonProgress lessonProgress = lessonProgressRepository.findByLessonId(lessonProgressRequest.getLessonId());
+
+
+        LessonProgress lessonProgress = lessonProgressRepository.findByLessonIdAndMemberId(lessonProgressRequest.getLessonId(), memberId);
+
         lessonProgress.updatePlayTime(lessonProgress.getPlaytime());
 
         List<LessonProgress> lessonProgressList =
-                lessonProgressRepository.findByLectureIdAndMemberId(lessonProgressRequest.getLectureId(),memberId);
+                lessonProgressRepository.findByLectureIdAndMemberId(lessonProgressRequest.getLectureId(), memberId);
 
         lessonProgressList.removeIf(lp -> lp.getLessonId().equals(lessonProgress.getLessonId()));
         lessonProgressList.add(lessonProgress);
