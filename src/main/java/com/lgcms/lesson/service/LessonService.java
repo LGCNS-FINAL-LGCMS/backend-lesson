@@ -193,10 +193,9 @@ public class LessonService {
     @Transactional
     public void updateLessonProgress(LessonProgressRequest lessonProgressRequest, Long memberId) {
 
-
         LessonProgress lessonProgress = lessonProgressRepository.findByLessonIdAndMemberId(lessonProgressRequest.getLessonId(), memberId);
 
-        lessonProgress.updatePlayTime(lessonProgress.getPlaytime());
+        lessonProgress.updatePlayTime(lessonProgressRequest.getPlaytime());
 
         List<LessonProgress> lessonProgressList =
                 lessonProgressRepository.findByLectureIdAndMemberId(lessonProgressRequest.getLectureId(), memberId);
