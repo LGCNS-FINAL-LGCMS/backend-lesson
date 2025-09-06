@@ -177,14 +177,14 @@ public class LessonService {
 
     @Transactional
     public void initLessonProgress(LessonProgressRequest lessonProgressRequest, Long memberId) {
-        if(lessonProgressRepository.findByLessonIdAndMemberId(lessonProgressRequest.getLessonId(), memberId) != null) return;
+        if (lessonProgressRepository.findByLessonIdAndMemberId(lessonProgressRequest.getLessonId(), memberId) != null)
+            return;
 
         LessonProgress lessonProgress = LessonProgress.builder()
                 .lessonId(lessonProgressRequest.getLessonId())
                 .memberId(memberId)
-                .percentage(0)
                 .lectureId(lessonProgressRequest.getLectureId())
-                .totalPlaytime(lessonProgressRequest.getPlaytime())
+                .totalPlaytime(lessonProgressRequest.getTotalPlaytime())
                 .build();
 
         lessonProgressRepository.save(lessonProgress);
@@ -194,6 +194,17 @@ public class LessonService {
     public void updateLessonProgress(LessonProgressRequest lessonProgressRequest, Long memberId) {
 
         LessonProgress lessonProgress = lessonProgressRepository.findByLessonIdAndMemberId(lessonProgressRequest.getLessonId(), memberId);
+
+        if (lessonProgress == null) {
+            LessonProgress newLessonProgress = LessonProgress.builder()
+                    .lessonId(lessonProgressRequest.getLessonId())
+                    .lectureId(lessonProgressRequest.getLectureId())
+                    .totalPlaytime(lessonProgressRequest.getTotalPlaytime())
+                    .memberId(memberId)
+                    .build();
+            lessonProgressRepository.save(newLessonProgress);
+            return;
+        }
 
         lessonProgress.updatePlayTime(lessonProgressRequest.getPlaytime());
 

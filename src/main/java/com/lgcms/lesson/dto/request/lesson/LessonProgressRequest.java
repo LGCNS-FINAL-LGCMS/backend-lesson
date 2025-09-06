@@ -14,4 +14,5 @@ public class LessonProgressRequest {
     private String lectureId;
     private String lessonId;
     private Integer playtime;
+    private Integer totalPlaytime;
 }
