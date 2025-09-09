@@ -207,12 +207,10 @@ public class LessonService {
         }
 
         lessonProgress.updatePlayTime(lessonProgressRequest.getPlaytime());
+        lessonProgressRepository.save(lessonProgress);
 
         List<LessonProgress> lessonProgressList =
                 lessonProgressRepository.findByLectureIdAndMemberId(lessonProgressRequest.getLectureId(), memberId);
-
-        lessonProgressList.removeIf(lp -> lp.getLessonId().equals(lessonProgress.getLessonId()));
-        lessonProgressList.add(lessonProgress);
 
         Integer progress = lessonProgressList.stream()
                 .mapToInt(LessonProgress::getPlaytime)

@@ -27,7 +27,7 @@ public class Lesson {
 
     private String thumbnailUrl;
 
-    @Column(length = 2000)
+    @Column(columnDefinition = "text")
     private String information;
 
     private String videoUrl;
