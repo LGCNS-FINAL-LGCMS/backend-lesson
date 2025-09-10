@@ -29,6 +29,8 @@ public class ProgressUpdateProducer {
                 .data(progressUpdate)
                 .build();
 
+        log.info("강의 진도율 : {}",progressUpdate.getPlaytime());
+
         kafkaTemplate.send("PROGRESS_UPDATED", kafkaEvent);
     }
 }
