@@ -7,6 +7,7 @@ import com.lgcms.lesson.service.LessonService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,7 +19,8 @@ public class EncodingEventConsumer {
     private final KafkaEventFactory kafkaEventFactory;
 
     @KafkaListener(topics = "ENCODING_SUCCESS_LESSON")
-    public void LectureUploadConsume(KafkaEvent event){
+    public void LectureUploadConsume(KafkaEvent event, Acknowledgment ack){
+        ack.acknowledge();
         EncodingSuccess videoEncodingSuccess = kafkaEventFactory.convert(event, EncodingSuccess.class);
         lessonService.updateVideoStatusAndThumbnail(videoEncodingSuccess);
     }
