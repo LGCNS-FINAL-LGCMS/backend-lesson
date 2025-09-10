@@ -20,8 +20,6 @@ public class EncodingEventConsumer {
     @KafkaListener(topics = "ENCODING_SUCCESS_LESSON")
     public void LectureUploadConsume(KafkaEvent event){
         EncodingSuccess videoEncodingSuccess = kafkaEventFactory.convert(event, EncodingSuccess.class);
-        System.out.println(videoEncodingSuccess.getLectureId());
-        System.out.println(videoEncodingSuccess.getLessonId());
         lessonService.updateVideoStatusAndThumbnail(videoEncodingSuccess);
     }
 }
