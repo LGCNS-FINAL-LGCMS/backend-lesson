@@ -171,6 +171,13 @@ public class LessonService {
 
         lesson.setPlayTimeAndVideoAndThumbnail(videoEncodingSuccess.getDuration(), videoEncodingSuccess.getVideoUrl(),
                 videoEncodingSuccess.getThumbnailUrl());
+        lessonRepository.save(lesson);
+        List<LessonProgress> lessonProgressList = lessonProgressRepository.findByLectureIdAndMemberId(videoEncodingSuccess.getLectureId(), videoEncodingSuccess.getMemberId());
+
+        Integer progress = lessonProgressList.stream()
+                .mapToInt(LessonProgress::getPlaytime)
+                .sum();
+        videoEncodingSuccess.setDuration(progress);
 
         encodingEventProducer.EncodingSuccessEvent(videoEncodingSuccess);
     }
